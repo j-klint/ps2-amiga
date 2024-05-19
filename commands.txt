@@ -1,0 +1,38 @@
+FFh (Reset)
+	The mouse responds to this command with "acknowledge" (FAh) then enters Reset Mode.
+FEh (Resend)
+	The host sends this command whenever it receives invalid data from the mouse. The mouse responds by resending the last(2) packet(3) it sent to the host.   If the mouse responds to the "Resend" command with another invalid packet, the host may either issue another "Resend" command, issue an "Error" command, cycle the mouse's power supply to reset the mouse, or it may inhibit communication (by bringing the Clock line low).  The action taken depends on the host.
+FCh (Error)
+F6h (Set Defaults)
+	The mouse responds with "acknowledge" (FAh) then loads the following values:  Sampling rate = 100, Resolution = 4 counts/mm, Scaling = 1:1, Disable Data Reporting.  The mouse then resets its movement counters and enters stream mode.
+F5h (Disable Data Reporting)
+	The mouse responds with "acknowledge" (FAh) then disables data reporting and resets its movement counters.  This only effects data reporting in Stream mode and does not disable sampling.  Disabled stream mode funcions the same as remote mode.
+F4h (Enable Data Reporting)
+	The mouse responds with "acknowledge" (FAh) then enables data reporting and resets its movement counters.  This command may be issued while the mouse is in Remote Mode (or Stream mode), but it will only effect data reporting in Stream mode.
+F3h (Set Sample Rate)
+	The mouse responds with "acknowledge" (FAh) then reads one more byte from the host.  The mouse saves this byte as the new sample rate. After receiving the sample rate, the mouse again responds with "acknowledge" (0xFA) and resets its movement counters.  Valid sample rates are 10, 20, 40, 60, 80, 100, and 200 samples/sec.
+F2h (Get Device ID)
+	The mouse responds with "acknowledge" (FAh) followed by its device ID (00h for the standard PS/2 mouse.)  The mouse should also reset its movement counters.
+F0h (Set Remote Mode)
+	The mouse responds with "acknowledge" (FAh) then resets its movement counters and enters remote mode.
+EEh (Set Wrap Mode)
+	The mouse responds with "acknowledge" (FAh) then resets its movement counters and  enters wrap mode.
+ECh (Reset Wrap Mode)
+	The mouse responds with "acknowledge" (FAh) then resets its movement counters and enters the mode it was in prior to wrap mode (Stream Mode or Remote Mode.)
+EBh (Read Data)
+	The mouse responds with acknowledge (FAh) then sends a movement data packet. This is the only way to read data in Remote Mode.  After the data packets has been successfully sent, it resets its movement counters.
+EAh (Set Stream Mode)
+	The mouse responds with "acknowledge" then resets its movement counters and enters steram mode.
+E9h (Status Request)
+	The mouse responds with "acknowledge" then sends the following 3-byte status packet (then resets its movement counters.):
+E8h (Set Resolution)
+	The mouse responds with acknowledge (FAh) then reads one byte from the host and again responds with acknowledge (FAh) then resets its movement counters.  The byte read from the host determines the resolution as follows: 
+		Byte Read from Host		Resolution
+		0x00					1 count/mm
+		0x01					2 count/mm
+		0x02					4 count/mm
+		0x03					8 count/mm
+E7h (Set Scaling 2:1)
+	The mouse responds with acknowledge (FAh) then enables 2:1 scaling (discussed earlier in this document.)
+E6h (Set Scaling 1:1)
+	The mouse responds with acknowledge (FAh) then enables 1:1 scaling (discussed earlier in this document.)
